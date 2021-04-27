@@ -16,6 +16,40 @@
 
 #include "lab2_sync_types.h"
 
+void input_data(Car* w, int total_car) {
+	srand(time(NULL));
+	int total = total_car;
+	int weight = total/100;
+    int randTotal[NUM];
+    int randAriv[NUM];
+    int selected[NUM];
+    int next;
+    randAriv[0] = 0;
+
+    for (int i=0; i<NUM; i++) {
+        if (i+1 == NUM) randTotal[i] = total;
+        else {
+            randTotal[i]= rand()%(total/3) + (total/5);
+            total -= randTotal[i];
+        }
+        selected[i] = 1;
+    }
+
+    for (int i=1; i<NUM; i++)
+        randAriv[i] = rand()%weight;
+
+	for (int i=0; i<NUM; i++) {
+        while(1) {
+            next = rand()%NUM;
+            if(selected[next]) break;
+        }
+		w[i].carId = i;
+		w[i].start_time = randAriv[next];
+		w[i].product_num = randTotal[next];
+        selected[next]=0;
+    }
+}
+
 /* Queue methods */
 void qinit(Queue *q, int qsize) {
     q->front = q->rear = 0; 

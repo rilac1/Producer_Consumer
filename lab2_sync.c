@@ -90,23 +90,14 @@ int main(int argc, char* argv[]) {
 	*order = total_car;    // order[0] = total_car
 	for (int i=0; i<NUM; i++) cunsId[i] = i;
 
-	// Workload 지정
-/* workload1 */
-	input_data(workload);
-/* workload2 */
-	// input_data2(workload);
-/* workload3 */
-	// input_data3(workload);
-/* workload4 */
-	// input_data4(workload);
+	input_data(workload, total_car);
   
 	// Round-Robin 결과가 order 에 저장됨.
 	RR(total_car, time_quantum);
 
 	// No Lock Experiment
-	// !!!!! 세 번째와 네 번째 workload 사용시 balance[0] 줄은 주석처리해야 함. !!!!!
 	gettimeofday(&start, NULL);
-	balance[0] = experimet(NoLock_producer, NoLock_consumer);
+	//balance[0] = experimet(NoLock_producer, NoLock_consumer);
 	gettimeofday(&end, NULL);
 	result_T[0] = (end.tv_sec - start.tv_sec) + ((end.tv_usec - start.tv_usec)/1000000);
 	
@@ -132,94 +123,6 @@ int main(int argc, char* argv[]) {
 	// 결과 출력
 	for(int i=0; i<3; i++)
 		print_result(str[i], total_car, balance[i], result_T[i]);
-}
-
-void input_data(Car* w) {
-    w[0].carId = 0;
-    w[0].start_time = 0;
-    w[0].product_num = 15;
-
-    w[1].carId = 1;
-    w[1].start_time = 2;
-    w[1].product_num = 30;
-
-    w[2].carId = 2;
-    w[2].start_time = 4;
-    w[2].product_num = 20;
-
-    w[3].carId = 3;
-    w[3].start_time = 6;
-    w[3].product_num = 25;
-
-    w[4].carId = 4;
-    w[4].start_time = 8;
-    w[4].product_num = 10;
-}
-
-void input_data2(Car* w) {
-    w[0].carId = 0;
-    w[0].start_time = 30;
-    w[0].product_num = 200;
-
-    w[1].carId = 1;
-    w[1].start_time = 0;
-    w[1].product_num = 350;
-
-    w[2].carId = 2;
-    w[2].start_time = 60;
-    w[2].product_num = 100;
-
-    w[3].carId = 3;
-    w[3].start_time = 40;
-    w[3].product_num = 50;
-
-    w[4].carId = 4;
-    w[4].start_time = 10;
-    w[4].product_num = 300;
-}
-
-void input_data3(Car* w) {
-    w[0].carId = 0;
-    w[0].start_time = 300;
-    w[0].product_num = 2500;
-
-    w[1].carId = 1;
-    w[1].start_time = 0;
-    w[1].product_num = 1000;
-
-    w[2].carId = 2;
-    w[2].start_time = 40;
-    w[2].product_num = 3000;
-
-    w[3].carId = 3;
-    w[3].start_time = 150;
-    w[3].product_num = 1500;
-
-    w[4].carId = 4;
-    w[4].start_time = 1000;
-    w[4].product_num = 2000;
-}
-
-void input_data4(Car* w) {
-    w[0].carId = 0;
-    w[0].start_time = 0;
-    w[0].product_num = 15000;
-
-    w[1].carId = 1;
-    w[1].start_time = 2000;
-    w[1].product_num = 30000;
-
-    w[2].carId = 2;
-    w[2].start_time = 4000;
-    w[2].product_num = 20000;
-
-    w[3].carId = 3;
-    w[3].start_time = 6000;
-    w[3].product_num = 25000;
-
-    w[4].carId = 4;
-    w[4].start_time = 8000;
-    w[4].product_num = 10000;
 }
 
 void print_result(char* str, int total_car, int balance, double execution_time) {

@@ -25,7 +25,6 @@
 #include <pthread.h>
 #include <asm/unistd.h>
 
-#define MAX_SIZE 100
 #define MAX_QUEUE 10
 #define NUM 5
 
@@ -62,7 +61,7 @@ Queue *queue;
 
 
 // 함수 헤더
-void input_data(Car* w);
+void input_data(Car* w, int total_car);
 void input_data2(Car* w);
 void input_data3(Car* w);
 void input_data4(Car* w);
