@@ -19,7 +19,7 @@
 void input_data(Car* w, int total_car) {
 	srand(time(NULL));
 	int total = total_car;
-	int weight = total/100;
+	int weight = total/10;
     int randTotal[NUM];
     int randAriv[NUM];
     int selected[NUM];
@@ -56,6 +56,8 @@ void qinit(Queue *q, int qsize) {
     q->data = (int*)malloc(sizeof(int)*(qsize + 1));
     q->size = qsize;
     q->balance = 0;
+    q->balance_enqueue = 0;
+    q->balance_dequeue = 0;
 }
 void enqueue(Queue *q, int data) {
     assert(!qfull(q));
@@ -67,6 +69,18 @@ int dequeue(Queue *q) {
     assert(!qempty(q));
     q->front = (q->front + 1) % (q->size + 1);
     q->balance--;
+    return q->data[q->front];
+}
+void enqueue_fine(Queue *q, int data) {
+    assert(!qfull(q));
+    q->rear = (q->rear + 1) % (q->size + 1);    
+    q->data[q->rear] = data;
+    q->balance_enqueue++;
+}
+int dequeue_fine(Queue *q) {
+    assert(!qempty(q));
+    q->front = (q->front + 1) % (q->size + 1);
+    q->balance_dequeue--;
     return q->data[q->front];
 }
 int qpeek(Queue *q) {
@@ -185,11 +199,8 @@ void *Fine_producer(void *order) {
         pthread_mutex_lock(&mutex_producer);
         while(qfull(queue))
             pthread_cond_wait(&empty, &mutex_producer);
-        pthread_mutex_unlock(&mutex_producer);
-
-        pthread_mutex_lock(&mutex);
         enqueue(queue, carId[i]);
-        pthread_mutex_unlock(&mutex);
+        pthread_mutex_unlock(&mutex_producer);
 
         pthread_cond_broadcast(&fill);      // using broadcast()
     }
@@ -227,5 +238,5 @@ int experimet(void* producer, void* consumer) {
     for (int i=0; i<NUM; i++)
         pthread_join(c[i], NULL);
 
-    return queue->balance;
+    return (queue->balance_enqueue)-(queue->balance_dequeue);
 }

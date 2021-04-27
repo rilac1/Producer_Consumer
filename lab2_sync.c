@@ -82,7 +82,7 @@ int main(int argc, char* argv[]) {
 	// 변수 선언
 	struct timeval start, end;
 	double result_T[3];
-	int balance[3] = {0,0,0};
+	int balance_output[3] = {0,0,0};
 
 	// 전역 변수 초기화
 	queue = malloc(sizeof(Queue));
@@ -97,19 +97,19 @@ int main(int argc, char* argv[]) {
 
 	// No Lock Experiment
 	gettimeofday(&start, NULL);
-	//balance[0] = experimet(NoLock_producer, NoLock_consumer);
+	//balance_output[0] = experimet(NoLock_producer, NoLock_consumer);
 	gettimeofday(&end, NULL);
 	result_T[0] = (end.tv_sec - start.tv_sec) + ((end.tv_usec - start.tv_usec)/1000000);
 	
 	// Coarse-grained Lock Experiment
 	gettimeofday(&start, NULL);
-	balance[1] = experimet(Coarse_producer, Coarse_consumer);
+	balance_output[1] = experimet(Coarse_producer, Coarse_consumer);
 	gettimeofday(&end, NULL);
 	result_T[1] = (end.tv_sec - start.tv_sec) + ((end.tv_usec - start.tv_usec)/1000000);
 	
 	// Fine-grained Lock Experiment
 	gettimeofday(&start, NULL);
-	balance[2] = experimet(Fine_producer, Fine_consumer);
+	balance_output[2] = experimet(Fine_producer, Fine_consumer);
 	gettimeofday(&end, NULL);
 	result_T[2] = (end.tv_sec - start.tv_sec) + ((end.tv_usec - start.tv_usec)/1000000);
 
@@ -121,8 +121,13 @@ int main(int argc, char* argv[]) {
 	};
 
 	// 결과 출력
+	printf("   ======== Workload ========\n");
+	printf("   [start_time] [product_num]\n");
+    for (int i=0; i<NUM; i++)
+        printf("%c:      %d          %d\n", 'A'+i, workload[i].start_time, workload[i].product_num);
+	printf("\n");
 	for(int i=0; i<3; i++)
-		print_result(str[i], total_car, balance[i], result_T[i]);
+		print_result(str[i], total_car, balance_output[i], result_T[i]);
 }
 
 void print_result(char* str, int total_car, int balance, double execution_time) {

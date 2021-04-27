@@ -36,6 +36,8 @@ typedef struct car_queue {
 	int *data;
 	int size;		// 큐 용량
 	int balance;
+	int balance_enqueue;
+	int balance_dequeue;
 	int rear, front;
 }Queue;
 
