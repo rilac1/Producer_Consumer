@@ -80,7 +80,7 @@ int main(int argc, char* argv[]) {
 	*/
 
 	// 변수 선언
-	struct timeval start, end;
+	clock_t start, end;
 	double result_T[3];
 	int balance[3] = {0,0,0};
 
@@ -96,22 +96,22 @@ int main(int argc, char* argv[]) {
 	RR(total_car, time_quantum);
 
 	// No Lock Experiment
-	gettimeofday(&start, NULL);
-	//balance[0] = experimet(NoLock_producer, NoLock_consumer);
-	gettimeofday(&end, NULL);
-	result_T[0] = (end.tv_sec - start.tv_sec) + ((end.tv_usec - start.tv_usec)/1000000);
+	start = clock();
+	balance[0] = experimet(NoLock_producer, NoLock_consumer);
+	end = clock();
+	result_T[0] = (double) (end - start)/CLOCKS_PER_SEC;
 	
 	// Coarse-grained Lock Experiment
 	gettimeofday(&start, NULL);
 	balance[1] = experimet(Coarse_producer, Coarse_consumer);
 	gettimeofday(&end, NULL);
-	result_T[1] = (end.tv_sec - start.tv_sec) + ((end.tv_usec - start.tv_usec)/1000000);
+	result_T[1] = (double) (end - start)/CLOCKS_PER_SEC;
 	
 	// Fine-grained Lock Experiment
 	gettimeofday(&start, NULL);
 	balance[2] = experimet(Fine_producer, Fine_consumer);
 	gettimeofday(&end, NULL);
-	result_T[2] = (end.tv_sec - start.tv_sec) + ((end.tv_usec - start.tv_usec)/1000000);
+	result_T[2] = (double) (end - start)/CLOCKS_PER_SEC;
 
 	// 문자열 출력 양식 지정
 	char str[3][35] = {
