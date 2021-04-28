@@ -102,15 +102,15 @@ int main(int argc, char* argv[]) {
 	result_T[0] = (double) (end - start)/CLOCKS_PER_SEC;
 	
 	// Coarse-grained Lock Experiment
-	gettimeofday(&start, NULL);
+	start = clock();
 	balance[1] = experimet(Coarse_producer, Coarse_consumer);
-	gettimeofday(&end, NULL);
+	end = clock();
 	result_T[1] = (double) (end - start)/CLOCKS_PER_SEC;
 	
 	// Fine-grained Lock Experiment
-	gettimeofday(&start, NULL);
+	start = clock();
 	balance[2] = experimet(Fine_producer, Fine_consumer);
-	gettimeofday(&end, NULL);
+	end = clock();
 	result_T[2] = (double) (end - start)/CLOCKS_PER_SEC;
 
 	// 문자열 출력 양식 지정
@@ -131,7 +131,7 @@ void print_result(char* str, int total_car, int balance, double execution_time) 
 	printf("Experiment Info\n");
 	printf("\tTotal Produce Number = %d\n", total_car);
 	printf("\tFinal Balance Value = %d\n", balance);
-	printf("\tExecution time = %f\n", execution_time);
+	printf("\tExecution time = %.4f\n", execution_time);
 }
 
 void test() {
